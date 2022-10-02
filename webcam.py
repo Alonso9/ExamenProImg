@@ -2,7 +2,8 @@ from configparser import Interpolation
 import cv2
 import numpy as np
 import datetime
-import os.path
+import os
+
 
 def cartoonize_image(img,ds_factor=4, sketch_mode=False):
     img_gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
@@ -35,7 +36,12 @@ if __name__ == "__main__":
     prev_char = -1
     current_time = datetime.datetime.now()
     tim = current_time
-    # print('CapturaCartoonize_1'+str(current_time))
+    path = '/IMG/'
+    try:
+        os.mkdir('IMG')
+    except OSError as e:
+        print("Error:"+str(e))
+        pass
 
     while True:
         ret, frame = cap.read()
@@ -50,10 +56,11 @@ if __name__ == "__main__":
         
         if cur_char == ord("s"):
             cv2.imshow("Cartoonize", cartoonize_image(frame,sketch_mode=True))
-            cv2.imwrite('CapturaCartoonize_filtro1_'+str(i)+'.png', cartoonize_image(frame,sketch_mode=True))
+            cv2.imwrite('IMG/CapturaCartoonize_filtro1_'+str(i)+'.png', cartoonize_image(frame,sketch_mode=True))
+            
         elif cur_char == ord("c"):
             cv2.imshow("Cartoonize", cartoonize_image(frame,sketch_mode=False))
-            cv2.imwrite('CapturaCartoonize_1filtro2_'+str(i)+'.png', cartoonize_image(frame,sketch_mode=False))
+            cv2.imwrite('IMG/CapturaCartoonize_1filtro2_'+str(i)+'.png', cartoonize_image(frame,sketch_mode=False))
 
         else:
             cv2.imshow("Cartoonize", frame)
